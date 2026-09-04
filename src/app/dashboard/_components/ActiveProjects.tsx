@@ -74,7 +74,7 @@ export const ActiveProjects: React.FC<ActiveProjectsProps> = ({
                       {project.title}
                     </h3>
                     <span
-                      className={`px-1.5 py-0.2 text-[10px] font-semibold rounded border ${
+                      className={`px-2 py-0.5 text-[10px] font-semibold rounded-full border ${
                         isAtRisk
                           ? 'bg-amber-50 text-amber-700 border-amber-200'
                           : 'bg-emerald-50 text-emerald-700 border-emerald-200'

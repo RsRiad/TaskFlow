@@ -84,7 +84,7 @@ export const TasksDueSoon: React.FC<TasksDueSoonProps> = ({
             {/* Right: Avatar & Date */}
             <div className="flex items-center gap-2 shrink-0">
               {task.isUrgent && !task.completed && (
-                <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-red-50 text-red-600 border border-red-200 shrink-0">
+                <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-red-50 text-red-600 border border-red-200 shrink-0">
                   Overdue
                 </span>
               )}

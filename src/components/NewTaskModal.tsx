@@ -76,9 +76,12 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 animate-fade-in">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm transition-opacity"
+      onClick={onClose}
+    >
       <div
-        className="bg-white rounded-[24px] max-w-lg w-full p-6 border border-gray-200 max-h-[90vh] overflow-y-auto shadow-xl"
+        className="bg-white rounded-[24px] max-w-lg w-full p-6 border border-gray-200 max-h-[90vh] overflow-y-auto shadow-xl animate-fade-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

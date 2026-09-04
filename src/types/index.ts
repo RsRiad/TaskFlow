@@ -2,6 +2,8 @@ export interface UserAvatar {
   id: string;
   name: string;
   avatarUrl: string;
+  role?: string;
+  email?: string;
 }
 
 export interface StatCardData {

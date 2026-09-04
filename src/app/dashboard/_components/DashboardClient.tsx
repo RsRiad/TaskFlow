@@ -13,28 +13,41 @@ import { RecentActivity } from './RecentActivity';
 import { CreateTaskView } from './CreateTaskView';
 import { TaskBoard } from './TaskBoard';
 import { MyTasksView } from './MyTasksView';
+import { ProjectsView } from './ProjectsView';
+import { TeamView } from './TeamView';
 
 import {
   initialProjects,
   initialTasks,
   initialActivities,
-  teamAvatars
+  teamAvatars as initialTeam
 } from './data';
-import { TaskItem, Project, TaskStatus } from '@/types';
+import { TaskItem, Project, TaskStatus, UserAvatar } from '@/types';
 
 export function DashboardClient() {
   const [activeTab, setActiveTab] = useState('overview');
-  const [activeView, setActiveView] = useState<'overview' | 'task-board' | 'task-form' | 'my-tasks'>('overview');
+  const [activeView, setActiveView] = useState<'overview' | 'task-board' | 'task-form' | 'my-tasks' | 'projects' | 'team'>('overview');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProjectFilter, setSelectedProjectFilter] = useState('all');
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskItem | null>(null);
-  const [returnAfterForm, setReturnAfterForm] = useState<'overview' | 'task-board' | 'my-tasks'>('overview');
+  const [returnAfterForm, setReturnAfterForm] = useState<'overview' | 'task-board' | 'my-tasks' | 'projects' | 'team'>('overview');
 
-  const [projects] = useState<Project[]>(initialProjects);
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [tasks, setTasks] = useState<TaskItem[]>(initialTasks);
+  const [teamList, setTeamList] = useState<UserAvatar[]>(initialTeam);
   const [activities] = useState(initialActivities);
+
+  // Handlers for Projects and Team
+  const handleAddNewProject = (newProject: Project) => {
+    setProjects((prev) => [newProject, ...prev]);
+  };
+
+  const handleAddTeamMember = (newMember: UserAvatar) => {
+    setTeamList((prev) => [...prev, newMember]);
+  };
 
   // Task Completion Handler
   const handleToggleTaskCompletion = (taskId: string) => {
@@ -88,8 +101,8 @@ export function DashboardClient() {
       setEditingTask({
         id: '',
         title: '',
-        projectName: 'Website redesign',
-        assignee: teamAvatars[0],
+        projectName: projects[0]?.title || 'Website redesign',
+        assignee: teamList[0],
         dueDate: 'Jun 12, 2025',
         dueStatus: 'In 5 days',
         isUrgent: false,
@@ -99,7 +112,17 @@ export function DashboardClient() {
     } else {
       setEditingTask(null);
     }
-    setReturnAfterForm(task || activeView === 'task-board' ? 'task-board' : activeView === 'my-tasks' ? 'my-tasks' : 'overview');
+    setReturnAfterForm(
+      task || activeView === 'task-board'
+        ? 'task-board'
+        : activeView === 'my-tasks'
+          ? 'my-tasks'
+          : activeView === 'projects'
+            ? 'projects'
+            : activeView === 'team'
+              ? 'team'
+              : 'overview'
+    );
     setActiveView('task-form');
     setActiveTab('create-task');
   };
@@ -108,7 +131,17 @@ export function DashboardClient() {
     const nextView = returnAfterForm;
     setEditingTask(null);
     setActiveView(nextView);
-    setActiveTab(nextView === 'task-board' ? 'task-board' : nextView === 'my-tasks' ? 'my-tasks' : 'overview');
+    setActiveTab(
+      nextView === 'task-board'
+        ? 'task-board'
+        : nextView === 'my-tasks'
+          ? 'my-tasks'
+          : nextView === 'projects'
+            ? 'projects'
+            : nextView === 'team'
+              ? 'team'
+              : 'overview'
+    );
   };
 
   // Navigation tab change handler
@@ -118,6 +151,10 @@ export function DashboardClient() {
       setActiveView('task-board');
     } else if (tab === 'my-tasks') {
       setActiveView('my-tasks');
+    } else if (tab === 'projects') {
+      setActiveView('projects');
+    } else if (tab === 'team') {
+      setActiveView('team');
     } else if (tab === 'create-task') {
       openTaskForm();
     } else {
@@ -154,10 +191,14 @@ export function DashboardClient() {
         onOpenNewTaskModal={() => openTaskForm()}
         isMobileOpen={isMobileOpen}
         setIsMobileOpen={setIsMobileOpen}
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={() => setIsSidebarCollapsed((prev) => !prev)}
       />
 
       {/* Main Content */}
-      <main className="lg:pl-56 min-h-screen w-full">
+      <main className={`min-h-screen w-full transition-[padding] duration-300 ease-in-out ${
+        isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-56'
+      }`}>
         {/* Mobile Header Toggle */}
         <div className="lg:hidden flex items-center justify-between px-5 py-3 border-b border-gray-200 bg-white">
           <button
@@ -176,7 +217,7 @@ export function DashboardClient() {
         </div>
 
         <div className="w-full px-5 py-5 lg:px-8 lg:py-6 space-y-5">
-          {/* Page Title */}
+          {/* Header Title for Overview */}
           {activeView === 'overview' && (
             <div className="flex items-center justify-between mb-1">
               <div>
@@ -194,6 +235,7 @@ export function DashboardClient() {
             </div>
           )}
 
+          {/* Header Title for Task Board */}
           {activeView === 'task-board' && (
             <div className="flex items-center justify-between mb-1">
               <div>
@@ -211,10 +253,11 @@ export function DashboardClient() {
             </div>
           )}
 
+          {/* View Routing */}
           {activeView === 'task-form' ? (
             <CreateTaskView
               projects={projects}
-              teamAvatars={teamAvatars}
+              teamAvatars={teamList}
               onBack={closeTaskForm}
               onAddTask={handleAddTask}
               onUpdateTask={handleUpdateTask}
@@ -224,7 +267,7 @@ export function DashboardClient() {
             <TaskBoard
               tasks={tasks}
               projects={projects}
-              teamAvatars={teamAvatars}
+              teamAvatars={teamList}
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
               onStatusChange={handleStatusChange}
@@ -236,12 +279,34 @@ export function DashboardClient() {
           ) : activeView === 'my-tasks' ? (
             <MyTasksView
               tasks={tasks}
-              teamAvatars={teamAvatars}
+              teamAvatars={teamList}
               projects={projects}
               onToggleTaskCompletion={handleToggleTaskCompletion}
               onStatusChange={handleStatusChange}
               onCreateTask={() => openTaskForm()}
               onEditTask={openTaskForm}
+            />
+          ) : activeView === 'projects' ? (
+            <ProjectsView
+              projects={projects}
+              tasks={tasks}
+              teamAvatars={teamList}
+              onSelectProjectFilter={(projectTitle) => {
+                setSelectedProjectFilter(projectTitle);
+                setActiveView('task-board');
+                setActiveTab('task-board');
+              }}
+              onAddNewProject={handleAddNewProject}
+            />
+          ) : activeView === 'team' ? (
+            <TeamView
+              teamAvatars={teamList}
+              tasks={tasks}
+              onSelectMemberFilter={() => {
+                setActiveView('my-tasks');
+                setActiveTab('my-tasks');
+              }}
+              onAddTeamMember={handleAddTeamMember}
             />
           ) : (
             <>
@@ -298,7 +363,7 @@ export function DashboardClient() {
         onClose={() => setIsNewTaskModalOpen(false)}
         onAddTask={handleAddTask}
         projects={projects}
-        teamAvatars={teamAvatars}
+        teamAvatars={teamList}
       />
     </div>
   );
