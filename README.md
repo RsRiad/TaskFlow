@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TaskFlow
 
-## Getting Started
+TaskFlow is a lightweight project management web app for small teams and agencies that need a clear view of projects, task ownership, status, and overdue work without Jira-style complexity.
 
-First, run the development server:
+## Step 01: Product thinking
+
+### 1. Users and top jobs
+
+TaskFlow is for small dev, design, and marketing teams, agency project managers, and freelancers managing client work. Their top tasks are:
+
+- See which projects are active and whether each project is on track.
+- See what tasks need attention now, who owns them, and what is overdue.
+- Create or update tasks quickly and place them into the right project and workflow status.
+
+### 2. First screen after login
+
+The first screen should make overall work health easiest to understand: active projects, total tasks, overdue tasks, completed work, and tasks due soon. This matters because mixed technical and non-technical users need immediate answers to “What needs attention today?” without opening multiple menus.
+
+### 3. Key task flow: create and assign a task
+
+The user opens TaskFlow and lands on the dashboard. They click **New task** or open the **Task board** and choose to add a task. The form asks for a task title, project, assignee, due date, and status. After submitting, the task is saved in the browser’s in-memory state and appears immediately in the matching Task Board column, where its status can be changed later.
+
+### 4. Assumptions
+
+- TaskFlow supports one team working across multiple projects.
+- There is no working authentication in this version; login is assumed to have already happened.
+- Data is mock/hardcoded and stored in browser memory only, so refreshing the page resets changes.
+- Projects and team members are predefined, while tasks can be created, edited, and moved between statuses during the session.
+
+## Tech used
+
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- In-memory mock data only; no backend or database
+
+## Core screens implemented
+
+- Dashboard / Home: active projects, task totals, overdue count, completed count, and tasks due soon.
+- Task Board: Kanban-style To Do, In Progress, and Done columns with searchable/filterable task cards and status controls.
+- Create/Edit Task: responsive form for creating and editing tasks that updates the in-memory board state.
+
+## Run locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) in a browser.
