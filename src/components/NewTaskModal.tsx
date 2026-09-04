@@ -77,7 +77,7 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm transition-opacity"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 transition-opacity"
       onClick={onClose}
     >
       <div
@@ -97,13 +97,13 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
           <div>
             <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Title <span className="text-red-400">*</span></label>
             <input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Design hero section"
-              className="w-full border border-gray-200 rounded-[16px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors" />
+              className="w-full border border-gray-200 rounded-[20px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors" />
           </div>
 
           <div>
             <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Description</label>
             <textarea rows={2} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Add task notes..."
-              className="w-full border border-gray-200 rounded-[16px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors resize-none" />
+              className="w-full border border-gray-200 rounded-[20px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors resize-none" />
           </div>
 
           {/* Files */}
@@ -119,7 +119,7 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
             {attachments.length > 0 && (
               <div className="space-y-1.5 mt-1.5">
                 {attachments.map((att) => (
-                  <div key={att.id} className="flex items-center justify-between p-2 bg-gray-50 border border-gray-200 rounded-[14px] text-[12px]">
+                  <div key={att.id} className="flex items-center justify-between p-2 bg-gray-50 border border-gray-200 rounded-[20px] text-[12px]">
                     <span className="truncate font-medium text-gray-700">{att.name}</span>
                     <button type="button" onClick={() => handleRemoveAttachment(att.id)} className="text-gray-400 hover:text-red-500 p-0.5">
                       <CloseIcon className="w-3 h-3" />

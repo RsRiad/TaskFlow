@@ -214,7 +214,7 @@ export const TeamView: React.FC<TeamViewProps> = ({
                 </div>
 
                 {/* Tasks Overview Stats */}
-                <div className="p-3 bg-gray-50/70 border border-gray-200/60 rounded-[16px] space-y-2">
+                <div className="p-3.5 bg-gray-50/80 border border-gray-200/80 rounded-[20px] space-y-2">
                   <div className="flex items-center justify-between text-[12px]">
                     <span className="text-gray-500">Active tasks</span>
                     <span className="font-semibold text-gray-900">{activeCount}</span>
@@ -249,7 +249,7 @@ export const TeamView: React.FC<TeamViewProps> = ({
       {/* Invite Member Modal */}
       {isInviteModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm transition-opacity"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 transition-opacity"
           onClick={() => setIsInviteModalOpen(false)}
         >
           <div
@@ -279,7 +279,7 @@ export const TeamView: React.FC<TeamViewProps> = ({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Jordan Lee"
-                  className="w-full border border-gray-200 rounded-[16px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors"
+                  className="w-full border border-gray-200 rounded-[20px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors"
                 />
               </div>
 
@@ -292,7 +292,7 @@ export const TeamView: React.FC<TeamViewProps> = ({
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                   placeholder="e.g. UI/UX Designer or Backend Engineer"
-                  className="w-full border border-gray-200 rounded-[16px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors"
+                  className="w-full border border-gray-200 rounded-[20px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors"
                 />
               </div>
 
@@ -305,7 +305,7 @@ export const TeamView: React.FC<TeamViewProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="e.g. jordan@taskflow.app"
-                  className="w-full border border-gray-200 rounded-[16px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors"
+                  className="w-full border border-gray-200 rounded-[20px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors"
                 />
               </div>
 

@@ -97,19 +97,32 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
     const handleDragOver = (e: React.DragEvent, columnStatus: TaskStatus) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
-        if (dragOverColumn !== columnStatus) setDragOverColumn(columnStatus);
+        if (dragOverColumn !== columnStatus) {
+            setDragOverColumn(columnStatus);
+        }
     };
 
     const handleDragLeave = (e: React.DragEvent, columnStatus: TaskStatus) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-            if (dragOverColumn === columnStatus) setDragOverColumn(null);
+        const rect = e.currentTarget.getBoundingClientRect();
+        if (
+            e.clientX < rect.left ||
+            e.clientX >= rect.right ||
+            e.clientY < rect.top ||
+            e.clientY >= rect.bottom
+        ) {
+            if (dragOverColumn === columnStatus) {
+                setDragOverColumn(null);
+            }
         }
     };
 
     const handleDrop = (e: React.DragEvent, columnStatus: TaskStatus) => {
         e.preventDefault();
+        e.stopPropagation();
         const taskId = e.dataTransfer.getData('text/plain') || draggedTaskId;
-        if (taskId) onStatusChange(taskId, columnStatus);
+        if (taskId) {
+            onStatusChange(taskId, columnStatus);
+        }
         setDraggedTaskId(null);
         setDragOverColumn(null);
     };
@@ -229,8 +242,9 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
                                                 draggable
                                                 onDragStart={(e) => handleDragStart(e, task.id)}
                                                 onDragEnd={handleDragEnd}
-                                                className={`group rounded-[18px] border border-gray-200 bg-white p-3.5 transition-all cursor-grab active:cursor-grabbing hover:border-gray-300 ${isBeingDragged ? 'opacity-40' : 'opacity-100'
-                                                    }`}
+                                                className={`group rounded-[24px] border border-gray-200 bg-white p-3.5 transition-all select-none cursor-grab active:cursor-grabbing hover:border-gray-300 hover:shadow-sm ${
+                                                    isBeingDragged ? 'opacity-40 border-dashed border-gray-400 bg-gray-50' : 'opacity-100'
+                                                }`}
                                             >
 
                                                 {/* Card header */}
@@ -246,6 +260,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
                                                     <div className="relative shrink-0">
                                                         <button
                                                             type="button"
+                                                            onMouseDown={(e) => e.stopPropagation()}
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 setActiveMenuTaskId(

@@ -209,7 +209,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
               <div className="space-y-4">
                 {/* Header: Icon & Category */}
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-[14px] bg-gray-100 border border-gray-200 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-[18px] bg-gray-100 border border-gray-200 flex items-center justify-center">
                     {renderProjectIcon(project.iconType)}
                   </div>
                   <span className="px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 text-[10px] font-semibold uppercase tracking-wider">
@@ -292,7 +292,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
       {/* New Project Modal */}
       {isNewProjectModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm transition-opacity"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 transition-opacity"
           onClick={() => setIsNewProjectModalOpen(false)}
         >
           <div
@@ -322,7 +322,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Brand Identity Overhaul"
-                  className="w-full border border-gray-200 rounded-[16px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors"
+                  className="w-full border border-gray-200 rounded-[20px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors"
                 />
               </div>
 
@@ -335,7 +335,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Outline key project deliverables..."
-                  className="w-full border border-gray-200 rounded-[16px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors resize-none"
+                  className="w-full border border-gray-200 rounded-[20px] px-3.5 py-2 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors resize-none"
                 />
               </div>
 
