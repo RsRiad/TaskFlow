@@ -21,7 +21,7 @@ import {
   initialTasks,
   initialActivities,
   teamAvatars as initialTeam
-} from './data';
+} from '@/data';
 import { TaskItem, Project, TaskStatus, UserAvatar } from '@/types';
 
 export function DashboardClient() {

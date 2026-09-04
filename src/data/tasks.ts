@@ -1,53 +1,5 @@
-import { Project, TaskItem, ActivityItem, UserAvatar } from '@/types';
-
-export const teamAvatars: UserAvatar[] = [
-  { id: '1', name: 'Sarah Chen', avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80', role: 'Product Lead & Designer', email: 'sarah@taskflow.app' },
-  { id: '2', name: 'Alex Rivera', avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', role: 'Senior Frontend Engineer', email: 'alex@taskflow.app' },
-  { id: '3', name: 'Jamie Taylor', avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', role: 'Fullstack Developer', email: 'jamie@taskflow.app' },
-  { id: '4', name: 'David Kim', avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80', role: 'Marketing Strategist', email: 'david@taskflow.app' },
-];
-
-export const initialProjects: Project[] = [
-  {
-    id: 'proj-1',
-    title: 'Website redesign',
-    description: 'Redesign our marketing website for better UX and performance.',
-    dueDate: 'May 30, 2025',
-    progress: 68,
-    iconType: 'laptop',
-    iconBgColor: 'bg-slate-100 text-slate-700',
-    iconColor: '#475569',
-    progressBarColor: 'bg-indigo-600',
-    owners: [teamAvatars[0], teamAvatars[1]],
-    extraOwnersCount: 1,
-  },
-  {
-    id: 'proj-2',
-    title: 'Mobile app launch',
-    description: 'Launch our new mobile app on iOS and Android.',
-    dueDate: 'Jun 15, 2025',
-    progress: 42,
-    iconType: 'smartphone',
-    iconBgColor: 'bg-slate-100 text-slate-700',
-    iconColor: '#475569',
-    progressBarColor: 'bg-indigo-600',
-    owners: [teamAvatars[2], teamAvatars[3]],
-    extraOwnersCount: 2,
-  },
-  {
-    id: 'proj-3',
-    title: 'Q3 campaign',
-    description: 'Plan and execute our Q3 marketing campaign.',
-    dueDate: 'Jul 10, 2025',
-    progress: 25,
-    iconType: 'megaphone',
-    iconBgColor: 'bg-slate-100 text-slate-700',
-    iconColor: '#475569',
-    progressBarColor: 'bg-indigo-600',
-    owners: [teamAvatars[0], teamAvatars[1]],
-    extraOwnersCount: 1,
-  },
-];
+import { TaskItem } from '@/types';
+import { teamAvatars } from './team';
 
 export const initialTasks: TaskItem[] = [
   {
@@ -170,48 +122,5 @@ export const initialTasks: TaskItem[] = [
     description: 'Confirm events, goals, and dashboard widgets for the redesign launch.',
     tags: ['Marketing', 'Strategy'],
     estimatedHours: 2,
-  },
-];
-
-export const initialActivities: ActivityItem[] = [
-  {
-    id: 'act-1',
-    actor: 'Alex',
-    actorAvatar: teamAvatars[1].avatarUrl,
-    actionText: 'completed "Design system updates"',
-    targetText: 'Website redesign',
-    projectName: 'Website redesign',
-    timeAgo: '2 hours ago',
-    badgeType: 'check',
-  },
-  {
-    id: 'act-2',
-    actor: 'Jamie',
-    actorAvatar: teamAvatars[2].avatarUrl,
-    actionText: 'commented on "Homepage layout v2"',
-    targetText: 'Website redesign',
-    projectName: 'Website redesign',
-    timeAgo: '4 hours ago',
-    badgeType: 'comment',
-  },
-  {
-    id: 'act-3',
-    actor: 'Priya',
-    actorAvatar: teamAvatars[0].avatarUrl,
-    actionText: 'uploaded "Campaign brief.pdf"',
-    targetText: 'Q3 campaign',
-    projectName: 'Q3 campaign',
-    timeAgo: 'Yesterday',
-    badgeType: 'file',
-  },
-  {
-    id: 'act-4',
-    actor: 'You',
-    actorAvatar: teamAvatars[3].avatarUrl,
-    actionText: 'created task "Review analytics setup"',
-    targetText: 'Mobile app launch',
-    projectName: 'Mobile app launch',
-    timeAgo: 'Yesterday',
-    badgeType: 'calendar',
   },
 ];
