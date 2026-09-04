@@ -2,24 +2,25 @@
 
 import React from 'react';
 import { Project } from '@/types';
-import { 
-  LaptopIcon, 
-  SmartphoneIcon, 
-  MegaphoneIcon, 
-  CalendarIcon, 
-  TaskBoardIcon, 
-  ArrowRightIcon 
-} from '@/components/icons/Index';
+import {
+  LaptopIcon,
+  SmartphoneIcon,
+  MegaphoneIcon,
+  ArrowRightIcon,
+} from '@/components/Icon';
+import { Button } from '@/components/Button';
 import Image from 'next/image';
 
 interface ActiveProjectsProps {
   projects: Project[];
   onViewTaskBoard?: () => void;
+  onSelectProject?: (projectTitle: string) => void;
 }
 
 export const ActiveProjects: React.FC<ActiveProjectsProps> = ({
   projects,
   onViewTaskBoard,
+  onSelectProject,
 }) => {
   const getProjectIcon = (type: Project['iconType']) => {
     switch (type) {
@@ -35,106 +36,97 @@ export const ActiveProjects: React.FC<ActiveProjectsProps> = ({
   };
 
   return (
-    <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-xs flex flex-col justify-between h-full">
-      <div>
-        {/* Header */}
-        <div className="flex items-center justify-between mb-3.5">
-          <h2 className="text-base font-bold text-slate-900 tracking-tight">Active projects</h2>
-          <button className="text-[11px] font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1 hover:underline">
-            <span>View all projects</span>
-            <ArrowRightIcon className="w-3 h-3" />
-          </button>
-        </div>
+    <div className="border border-gray-200 rounded-[24px] p-5 bg-white h-full flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-[15px] font-semibold text-gray-900">Active projects</h2>
+        <Button
+          variant="ghost"
+          size="sm"
+          icon={<ArrowRightIcon className="w-3 h-3" />}
+          iconPosition="right"
+          onClick={onViewTaskBoard}
+          className="text-gray-400 hover:text-gray-600"
+        >
+          View all
+        </Button>
+      </div>
 
-        {/* List of Project Cards */}
-        <div className="space-y-3">
-          {projects.map((project) => (
+      {/* Project List */}
+      <div className="space-y-1 flex-1">
+        {projects.map((project) => {
+          const isAtRisk = project.progress < 40;
+          return (
             <div
               key={project.id}
-              className="border border-slate-200/80 rounded-xl p-3 sm:p-3.5 hover:border-slate-300 hover:shadow-2xs transition-all duration-150 bg-white"
+              onClick={() => onSelectProject && onSelectProject(project.title)}
+              className="flex items-center justify-between py-2.5 px-3 rounded-[16px] hover:bg-gray-50 border border-transparent hover:border-gray-200 cursor-pointer transition-all group"
             >
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                {/* Left: Icon & Project Meta */}
-                <div className="flex items-start gap-3 flex-1">
-                  <div className={`w-9 h-9 rounded-xl ${project.iconBgColor} flex items-center justify-center shrink-0 shadow-2xs`}>
-                    {getProjectIcon(project.iconType)}
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-slate-900 tracking-tight">
-                      {project.title}
-                    </h3>
-                    <p className="text-[11px] text-slate-500 mt-0.5 leading-normal max-w-sm">
-                      {project.description}
-                    </p>
-                  </div>
+              {/* Left: Icon & Info */}
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="w-8 h-8 rounded-[12px] bg-gray-100 flex items-center justify-center text-gray-500 shrink-0 group-hover:bg-gray-200 transition-colors">
+                  {getProjectIcon(project.iconType)}
                 </div>
 
-                {/* Right: Owner, Due Date, Progress */}
-                <div className="grid grid-cols-3 md:flex items-center gap-3 sm:gap-5 pt-2.5 md:pt-0 border-t md:border-t-0 border-slate-100 shrink-0">
-                  {/* Owner Column */}
-                  <div>
-                    <span className="text-[10px] font-semibold text-slate-400 block mb-1">Owner</span>
-                    <div className="flex items-center -space-x-1.5">
-                      {project.owners.map((owner) => (
-                        <div
-                          key={owner.id}
-                          className="relative w-6 h-6 rounded-full border-2 border-white overflow-hidden shadow-xs ring-1 ring-slate-100"
-                          title={owner.name}
-                        >
-                          <Image
-                            src={owner.avatarUrl}
-                            alt={owner.name}
-                            fill
-                            className="object-cover"
-                            sizes="24px"
-                          />
-                        </div>
-                      ))}
-                      {project.extraOwnersCount && (
-                        <div className="relative w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[9px] font-bold text-slate-600 shadow-xs ring-1 ring-slate-100">
-                          +{project.extraOwnersCount}
-                        </div>
-                      )}
-                    </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-[13px] font-semibold text-gray-900 truncate group-hover:text-gray-700">
+                      {project.title}
+                    </h3>
+                    <span
+                      className={`px-1.5 py-0.2 text-[10px] font-semibold rounded border ${
+                        isAtRisk
+                          ? 'bg-amber-50 text-amber-700 border-amber-200'
+                          : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      }`}
+                    >
+                      {isAtRisk ? 'At Risk' : 'On Track'}
+                    </span>
                   </div>
+                  <p className="text-[11px] text-gray-400 truncate mt-0.5">
+                    Due {project.dueDate}
+                  </p>
+                </div>
+              </div>
 
-                  {/* Due Date Column */}
-                  <div>
-                    <span className="text-[10px] font-semibold text-slate-400 block mb-1">Due date</span>
-                    <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-700">
-                      <CalendarIcon className="w-3 h-3 text-slate-400" />
-                      <span>{project.dueDate}</span>
-                    </div>
-                  </div>
-
-                  {/* Progress Column */}
-                  <div className="min-w-[90px]">
-                    <div className="flex items-center justify-between text-[11px] mb-1">
-                      <span className="text-[10px] font-semibold text-slate-400">Progress</span>
-                      <span className="font-bold text-indigo-600">{project.progress}%</span>
-                    </div>
-                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-500 ${project.progressBarColor}`}
-                        style={{ width: `${project.progress}%` }}
+              {/* Right: Owners & Progress */}
+              <div className="flex items-center gap-4 shrink-0">
+                {/* Owners */}
+                <div className="flex items-center -space-x-1.5">
+                  {project.owners.map((owner) => (
+                    <div
+                      key={owner.id}
+                      className="relative w-6 h-6 rounded-full border-2 border-white overflow-hidden"
+                      title={owner.name}
+                    >
+                      <Image
+                        src={owner.avatarUrl}
+                        alt={owner.name}
+                        fill
+                        className="object-cover"
+                        sizes="24px"
                       />
                     </div>
+                  ))}
+                </div>
+
+                {/* Progress */}
+                <div className="flex items-center gap-2 min-w-[80px]">
+                  <div className="flex-1 bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gray-900 transition-all duration-500"
+                      style={{ width: `${project.progress}%` }}
+                    />
                   </div>
+                  <span className="text-[11px] font-semibold text-gray-500 w-7 text-right">
+                    {project.progress}%
+                  </span>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
-
-      {/* Bottom Button */}
-      <button
-        onClick={onViewTaskBoard}
-        className="w-full mt-3.5 py-2.5 px-3 bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 rounded-lg text-indigo-600 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all shadow-2xs"
-      >
-        <TaskBoardIcon className="w-3.5 h-3.5 text-indigo-600 stroke-[2]" />
-        <span>View task board</span>
-      </button>
     </div>
   );
 };

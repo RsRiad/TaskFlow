@@ -1,8 +1,7 @@
-import { Roboto } from "next/font/google";
+import { Outfit } from "next/font/google";
 
-export const roboto = Roboto({
-  weight: ["100", "300", "400", "500", "700", "900"],
+export const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-roboto",
+  variable: "--font-outfit",
   display: "swap",
 });

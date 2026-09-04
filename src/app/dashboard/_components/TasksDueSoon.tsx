@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { TaskItem } from '@/types';
-import { ArrowRightIcon, ChevronDownIcon } from '@/components/icons/Index';
+import { ArrowRightIcon, ChevronDownIcon } from '@/components/Icon';
+import { Button } from '@/components/Button';
 import Image from 'next/image';
 
 interface TasksDueSoonProps {
@@ -22,102 +23,106 @@ export const TasksDueSoon: React.FC<TasksDueSoonProps> = ({
   const hiddenCount = Math.max(0, tasks.length - 5);
 
   return (
-    <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-xs flex flex-col justify-between h-full">
-      <div>
-        {/* Header */}
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-bold text-slate-900 tracking-tight">Tasks due soon</h2>
-          <button
-            onClick={onViewTaskBoard}
-            className="text-[11px] font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1 hover:underline"
-          >
-            <span>View all tasks</span>
-            <ArrowRightIcon className="w-3 h-3" />
-          </button>
-        </div>
+    <div className="border border-gray-200 rounded-[24px] p-5 bg-white h-full flex flex-col">
 
-        {/* Task Items List */}
-        <div className="divide-y divide-slate-100">
-          {visibleTasks.map((task) => (
-            <div
-              key={task.id}
-              className="py-2.5 first:pt-0 last:pb-0 flex items-center justify-between gap-2.5 group transition-colors"
-            >
-              {/* Left: Radio/Check toggle & Task details */}
-              <div className="flex items-start gap-2.5 flex-1 min-w-0">
-                <button
-                  onClick={() => onToggleTaskCompletion(task.id)}
-                  className={`mt-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all shrink-0 ${task.completed
-                      ? 'bg-indigo-600 border-indigo-600 text-white'
-                      : 'border-slate-300 group-hover:border-indigo-500'
-                    }`}
-                  aria-label={`Toggle task ${task.title}`}
-                >
-                  {task.completed && (
-                    <svg className="w-2.5 h-2.5 fill-current stroke-current" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </button>
-
-                <div className="min-w-0">
-                  <h4
-                    onClick={() => onToggleTaskCompletion(task.id)}
-                    className={`text-xs font-semibold cursor-pointer transition-colors truncate ${task.completed
-                        ? 'line-through text-slate-400 font-normal'
-                        : 'text-slate-900 hover:text-indigo-600'
-                      }`}
-                  >
-                    {task.title}
-                  </h4>
-                  <span className="text-[10px] text-slate-400 block mt-0.5">
-                    {task.projectName}
-                  </span>
-                </div>
-              </div>
-
-              {/* Right: Assignee Avatar & Due Date */}
-              <div className="flex items-center gap-2.5 shrink-0">
-                <div
-                  className="relative w-5 h-5 rounded-full overflow-hidden ring-1 ring-slate-200"
-                  title={task.assignee.name}
-                >
-                  <Image
-                    src={task.assignee.avatarUrl}
-                    alt={task.assignee.name}
-                    fill
-                    className="object-cover"
-                    sizes="20px"
-                  />
-                </div>
-
-                <div className="text-right min-w-[55px]">
-                  <span className="text-[11px] font-semibold text-slate-700 block">
-                    {task.dueDate}
-                  </span>
-                  <span
-                    className={`text-[10px] font-medium block ${task.isUrgent ? 'text-amber-600 font-semibold' : 'text-slate-400'
-                      }`}
-                  >
-                    {task.dueStatus}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-[15px] font-semibold text-gray-900">Tasks due soon</h2>
+        <Button
+          variant="ghost"
+          size="sm"
+          icon={<ArrowRightIcon className="w-3 h-3" />}
+          iconPosition="right"
+          onClick={onViewTaskBoard}
+          className="text-gray-400 hover:text-gray-600"
+        >
+          View all
+        </Button>
       </div>
 
-      {/* Expand / Collapse Button */}
+
+      {/* Task List */}
+      <div className="flex-1">
+        {visibleTasks.map((task) => (
+          <div
+            key={task.id}
+            className="flex items-center justify-between py-2.5 border-b border-gray-100 last:border-0 group"
+          >
+            {/* Left: Checkbox & Task */}
+            <div className="flex items-center gap-2.5 flex-1 min-w-0">
+              <button
+                onClick={() => onToggleTaskCompletion(task.id)}
+                className={`w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center transition-colors shrink-0 ${
+                  task.completed
+                    ? 'bg-gray-900 border-gray-900 text-white'
+                    : 'border-gray-300 group-hover:border-gray-400'
+                }`}
+                aria-label={`Toggle task ${task.title}`}
+              >
+                {task.completed && (
+                  <svg className="w-2.5 h-2.5 fill-current stroke-current" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </button>
+
+              <div className="min-w-0">
+                <p
+                  onClick={() => onToggleTaskCompletion(task.id)}
+                  className={`text-[13px] cursor-pointer transition-colors truncate ${
+                    task.completed
+                      ? 'line-through text-gray-400'
+                      : 'text-gray-900 font-medium hover:text-gray-600'
+                  }`}
+                >
+                  {task.title}
+                </p>
+                <span className="text-[11px] text-gray-400">{task.projectName}</span>
+              </div>
+            </div>
+
+            {/* Right: Avatar & Date */}
+            <div className="flex items-center gap-2 shrink-0">
+              {task.isUrgent && !task.completed && (
+                <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-red-50 text-red-600 border border-red-200 shrink-0">
+                  Overdue
+                </span>
+              )}
+              <div
+                className="relative w-5 h-5 rounded-full overflow-hidden border border-gray-200"
+                title={task.assignee.name}
+              >
+                <Image
+                  src={task.assignee.avatarUrl}
+                  alt={task.assignee.name}
+                  fill
+                  className="object-cover"
+                  sizes="20px"
+                />
+              </div>
+              <span className={`text-[12px] font-medium min-w-[50px] text-right ${task.isUrgent && !task.completed ? 'text-red-600' : 'text-gray-400'}`}>
+                {task.dueDate}
+              </span>
+            </div>
+          </div>
+
+        ))}
+      </div>
+
+      {/* Show More / Less */}
       {tasks.length > 5 && (
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setShowAll(!showAll)}
-          className="w-full mt-3 pt-2.5 border-t border-slate-100 text-slate-500 hover:text-indigo-600 font-semibold text-[11px] flex items-center justify-center gap-1 transition-colors"
+          icon={<ChevronDownIcon className={`w-3 h-3 transition-transform duration-150 ${showAll ? 'rotate-180' : ''}`} />}
+          iconPosition="right"
+          className="w-full mt-3 pt-2 border-t border-gray-100 text-gray-400 hover:text-gray-600 justify-center"
         >
-          <span>{showAll ? 'Show less tasks' : `Show ${hiddenCount} more tasks`}</span>
-          <ChevronDownIcon className={`w-3 h-3 transition-transform duration-150 ${showAll ? 'rotate-180' : ''}`} />
-        </button>
+          {showAll ? 'Show less' : `Show ${hiddenCount} more`}
+        </Button>
       )}
+
     </div>
   );
 };

@@ -32,6 +32,21 @@ export interface Project {
 }
 
 export type TaskStatus = 'To Do' | 'In Progress' | 'Done';
+export type TaskPriority = 'Low' | 'Medium' | 'High' | 'Urgent';
+
+export interface TaskAttachment {
+  id: string;
+  name: string;
+  size: string;
+  type: 'image' | 'pdf' | 'code' | 'zip' | 'file';
+  url?: string;
+}
+
+export interface TaskChecklistItem {
+  id: string;
+  text: string;
+  completed: boolean;
+}
 
 export interface TaskItem {
   id: string;
@@ -44,6 +59,11 @@ export interface TaskItem {
   completed: boolean;
   status: TaskStatus;
   description?: string;
+  priority?: TaskPriority;
+  attachments?: TaskAttachment[];
+  tags?: string[];
+  estimatedHours?: number;
+  checklist?: TaskChecklistItem[];
 }
 
 export interface ActivityItem {

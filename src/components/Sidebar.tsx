@@ -1,16 +1,18 @@
 'use client';
 
-import React from 'react';
-import { 
-  OverviewIcon, 
-  MyTasksIcon, 
-  TaskBoardIcon, 
-  ProjectsIcon, 
-  TeamIcon, 
-  ChatIcon, 
-  PlusIcon,
-  TaskFlowLogoIcon
-} from '@/components/icons/Index';
+import React, { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
+import {
+  OverviewIcon,
+  MyTasksIcon,
+  TaskBoardIcon,
+  ProjectsIcon,
+  TeamIcon,
+  SettingsIcon,
+  LogoutIcon,
+  ChevronDownIcon,
+  TaskFlowLogoIcon,
+} from '@/components/Icon';
 
 interface SidebarProps {
   activeTab: string;
@@ -27,6 +29,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isMobileOpen = false,
   setIsMobileOpen,
 }) => {
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
   const navItems = [
     { id: 'overview', label: 'Overview', icon: OverviewIcon },
     { id: 'my-tasks', label: 'My tasks', icon: MyTasksIcon },
@@ -35,32 +40,42 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'team', label: 'Team', icon: TeamIcon },
   ];
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setIsProfileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <>
       {/* Mobile Backdrop */}
       {isMobileOpen && (
-        <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 lg:hidden"
+        <div
+          className="fixed inset-0 bg-black/20 z-40 lg:hidden"
           onClick={() => setIsMobileOpen && setIsMobileOpen(false)}
         />
       )}
 
-      <aside 
-        className={`fixed top-0 left-0 bottom-0 w-56 bg-[var(--bg-sidebar)] text-slate-300 flex flex-col justify-between p-4 z-50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+      <aside
+        className={`fixed top-0 left-0 bottom-0 w-56 bg-white border-r border-gray-200 flex flex-col justify-between py-6 px-4 z-50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        {/* Top Header & Navigation */}
-        <div className="space-y-6">
-          {/* Logo Brand */}
-          <div className="flex items-center gap-2.5 px-2 pt-1">
-            <TaskFlowLogoIcon className="w-7 h-7" />
-            <span className="text-lg font-bold tracking-tight text-white font-sans">
+        {/* Top: Logo & Navigation */}
+        <div className="space-y-8">
+          {/* Logo with Workflow icon */}
+          <div className="px-3 flex items-center gap-2.5">
+            <TaskFlowLogoIcon className="w-7 h-7 shrink-0" />
+            <h1 className="text-lg font-bold text-gray-900 tracking-wide uppercase">
               TaskFlow
-            </span>
+            </h1>
           </div>
 
-          {/* Nav List */}
+          {/* Navigation */}
           <nav className="space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -72,13 +87,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     setActiveTab(item.id);
                     if (setIsMobileOpen) setIsMobileOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-150 ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-full text-[13px] font-medium transition-colors relative ${
                     isActive
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-indigo-600/20 font-semibold'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800/40'
+                      ? 'text-gray-900 bg-gray-100 font-semibold'
+                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                  {/* Active indicator — left accent bar */}
+                  {isActive && (
+                    <span className="absolute left-1.5 top-2 bottom-2 w-[3px] rounded-full bg-orange-700" />
+                  )}
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-gray-900' : 'text-gray-400'}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -86,29 +105,64 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </nav>
         </div>
 
-        {/* Bottom CTA Banner Box */}
-        <div className="bg-[var(--bg-sidebar-card)] border border-slate-800/80 rounded-xl p-3.5 space-y-2.5 shadow-md">
-          <div className="w-8 h-8 rounded-full bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300">
-            <ChatIcon className="w-4 h-4" />
-          </div>
-
-          <div>
-            <h4 className="text-xs font-bold text-white tracking-tight">No tasks yet?</h4>
-            <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
-              Create a task to get things moving.
-            </p>
-          </div>
-
+        {/* Bottom: User Profile with Popover */}
+        <div ref={profileRef} className="relative px-1 pt-4 border-t border-gray-100">
+          {/* Profile Button */}
           <button
-            onClick={() => {
-              onOpenNewTaskModal();
-              if (setIsMobileOpen) setIsMobileOpen(false);
-            }}
-            className="w-full flex items-center justify-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold py-2 px-3 rounded-lg shadow-sm shadow-indigo-600/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
+            type="button"
+            onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+            className="w-full flex items-center justify-between gap-2.5 p-2 rounded-full hover:bg-gray-50 transition-colors text-left group border border-transparent hover:border-gray-200"
           >
-            <PlusIcon className="w-3.5 h-3.5" />
-            <span>New task</span>
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 border border-gray-200">
+                <Image
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+                  alt="Maya"
+                  fill
+                  className="object-cover"
+                  sizes="32px"
+                />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[13px] font-semibold text-gray-900 truncate">Maya</p>
+                <p className="text-[11px] text-gray-400 truncate">Product Lead</p>
+              </div>
+            </div>
+            <ChevronDownIcon
+              className={`w-3.5 h-3.5 text-gray-400 shrink-0 transition-transform duration-200 group-hover:text-gray-600 ${
+                isProfileMenuOpen ? 'rotate-180' : ''
+              }`}
+            />
           </button>
+
+          {/* Profile Menu Popover */}
+          {isProfileMenuOpen && (
+            <div className="absolute bottom-16 left-0 right-0 z-50 bg-white border border-gray-200 rounded-[20px] shadow-xl p-1.5 animate-fade-in text-[13px]">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsProfileMenuOpen(false);
+                  alert('Settings clicked');
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-[12px] transition-colors"
+              >
+                <SettingsIcon className="w-4 h-4 text-gray-500" />
+                <span>Settings</span>
+              </button>
+              <div className="my-1 border-t border-gray-100" />
+              <button
+                type="button"
+                onClick={() => {
+                  setIsProfileMenuOpen(false);
+                  alert('Logged out successfully');
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-red-600 hover:bg-red-50 rounded-[12px] transition-colors font-medium"
+              >
+                <LogoutIcon className="w-4 h-4 text-red-500" />
+                <span>Log out</span>
+              </button>
+            </div>
+          )}
         </div>
       </aside>
     </>
