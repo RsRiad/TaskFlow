@@ -29,9 +29,22 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   size = 'md',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [openUpward, setOpenUpward] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find((opt) => opt.value === value);
+
+  useEffect(() => {
+    if (isOpen && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      if (spaceBelow < 180 && rect.top > 180) {
+        setOpenUpward(true);
+      } else {
+        setOpenUpward(false);
+      }
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,7 +64,10 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   const isSmall = size === 'sm';
 
   return (
-    <div ref={containerRef} className={`relative inline-block w-full ${className}`}>
+    <div
+      ref={containerRef}
+      className={`relative inline-block w-full ${isOpen ? 'z-50' : 'z-10'} ${className}`}
+    >
       {/* Trigger Button */}
       <button
         type="button"
@@ -88,7 +104,11 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 
       {/* Popover Dropdown Menu */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 z-50 bg-white border border-gray-200 rounded-[20px] shadow-xl p-1.5 max-h-56 overflow-y-auto animate-fade-in">
+        <div
+          className={`absolute left-0 right-0 z-[100] bg-white border border-gray-200 rounded-[20px] shadow-2xl p-1.5 max-h-56 overflow-y-auto animate-fade-in ${
+            openUpward ? 'bottom-full mb-1.5' : 'top-full mt-1.5'
+          }`}
+        >
           {options.map((option) => {
             const isSelected = option.value === value;
             return (

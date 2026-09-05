@@ -84,12 +84,12 @@ export const TasksDueSoon: React.FC<TasksDueSoonProps> = ({
             {/* Right: Avatar & Date */}
             <div className="flex items-center gap-2 shrink-0">
               {task.isUrgent && !task.completed && (
-                <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-red-50 text-red-600 border border-red-200 shrink-0">
+                <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-red-50 text-red-600 border border-red-200 shrink-0 whitespace-nowrap">
                   Overdue
                 </span>
               )}
               <div
-                className="relative w-5 h-5 rounded-full overflow-hidden border border-gray-200"
+                className="hidden sm:block relative w-5 h-5 rounded-full overflow-hidden border border-gray-200"
                 title={task.assignee.name}
               >
                 <Image

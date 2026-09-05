@@ -125,32 +125,36 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
         </Button>
       </div>
 
-      {/* Top Metric Quick Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="border border-gray-200 rounded-[24px] p-5 bg-white">
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
-            Total Active Projects
+      {/* Top Metric Quick Stats (Single row on mobile view) */}
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        <div className="border border-gray-200 rounded-[18px] sm:rounded-[24px] p-2.5 sm:p-5 bg-white min-w-0 flex flex-col justify-between">
+          <p className="text-[9px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5 sm:mb-1 truncate">
+            Active Projects
           </p>
-          <h3 className="text-2xl font-bold text-gray-900">{totalProjects}</h3>
-          <p className="text-[12px] text-gray-400 mt-1">Currently tracked in workspace</p>
+          <h3 className="text-lg sm:text-2xl font-bold text-gray-900">{totalProjects}</h3>
+          <p className="text-[10px] sm:text-[12px] text-gray-400 mt-0.5 sm:mt-1 truncate hidden sm:block">
+            Tracked in workspace
+          </p>
         </div>
 
-        <div className="border border-gray-200 rounded-[24px] p-5 bg-white">
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
-            Average Completion
+        <div className="border border-gray-200 rounded-[18px] sm:rounded-[24px] p-2.5 sm:p-5 bg-white min-w-0 flex flex-col justify-between">
+          <p className="text-[9px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5 sm:mb-1 truncate">
+            Completion Rate
           </p>
-          <h3 className="text-2xl font-bold text-gray-900">{avgProgress}%</h3>
-          <div className="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
+          <h3 className="text-lg sm:text-2xl font-bold text-gray-900">{avgProgress}%</h3>
+          <div className="w-full bg-gray-100 h-1 sm:h-1.5 rounded-full mt-1 overflow-hidden hidden sm:block">
             <div className="bg-gray-900 h-full rounded-full transition-all" style={{ width: `${avgProgress}%` }} />
           </div>
         </div>
 
-        <div className="border border-gray-200 rounded-[24px] p-5 bg-white">
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
+        <div className="border border-gray-200 rounded-[18px] sm:rounded-[24px] p-2.5 sm:p-5 bg-white min-w-0 flex flex-col justify-between">
+          <p className="text-[9px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5 sm:mb-1 truncate">
             Team Assignees
           </p>
-          <h3 className="text-2xl font-bold text-gray-900">{teamAvatars.length}</h3>
-          <p className="text-[12px] text-gray-400 mt-1">Collaborating across projects</p>
+          <h3 className="text-lg sm:text-2xl font-bold text-gray-900">{teamAvatars.length}</h3>
+          <p className="text-[10px] sm:text-[12px] text-gray-400 mt-0.5 sm:mt-1 truncate hidden sm:block">
+            Across active projects
+          </p>
         </div>
       </div>
 
@@ -292,11 +296,11 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
       {/* New Project Modal */}
       {isNewProjectModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 transition-opacity"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/20 transition-opacity overflow-y-auto"
           onClick={() => setIsNewProjectModalOpen(false)}
         >
           <div
-            className="bg-white rounded-[24px] max-w-md w-full p-6 border border-gray-200 shadow-xl space-y-4 animate-fade-in"
+            className="bg-white rounded-[24px] max-w-md w-full p-4 sm:p-6 border border-gray-200 shadow-xl space-y-4 animate-fade-in max-h-[90vh] overflow-y-auto my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}

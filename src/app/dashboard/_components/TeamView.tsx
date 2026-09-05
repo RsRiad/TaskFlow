@@ -99,32 +99,38 @@ export const TeamView: React.FC<TeamViewProps> = ({
         </Button>
       </div>
 
-      {/* Top Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="border border-gray-200 rounded-[24px] p-5 bg-white">
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
+      {/* Top Metric Cards (Single row on mobile view) */}
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        <div className="border border-gray-200 rounded-[18px] sm:rounded-[24px] p-2.5 sm:p-5 bg-white min-w-0 flex flex-col justify-between">
+          <p className="text-[9px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5 sm:mb-1 truncate">
             Team Members
           </p>
-          <h3 className="text-2xl font-bold text-gray-900">{teamAvatars.length}</h3>
-          <p className="text-[12px] text-gray-400 mt-1">Active contributors in workspace</p>
-        </div>
-
-        <div className="border border-gray-200 rounded-[24px] p-5 bg-white">
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
-            Total Assigned Tasks
+          <h3 className="text-lg sm:text-2xl font-bold text-gray-900">{teamAvatars.length}</h3>
+          <p className="text-[10px] sm:text-[12px] text-gray-400 mt-0.5 sm:mt-1 truncate hidden sm:block">
+            Active contributors
           </p>
-          <h3 className="text-2xl font-bold text-gray-900">{tasks.length}</h3>
-          <p className="text-[12px] text-gray-400 mt-1">Distributed across team</p>
         </div>
 
-        <div className="border border-gray-200 rounded-[24px] p-5 bg-white">
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
+        <div className="border border-gray-200 rounded-[18px] sm:rounded-[24px] p-2.5 sm:p-5 bg-white min-w-0 flex flex-col justify-between">
+          <p className="text-[9px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5 sm:mb-1 truncate">
+            Assigned Tasks
+          </p>
+          <h3 className="text-lg sm:text-2xl font-bold text-gray-900">{tasks.length}</h3>
+          <p className="text-[10px] sm:text-[12px] text-gray-400 mt-0.5 sm:mt-1 truncate hidden sm:block">
+            Distributed across team
+          </p>
+        </div>
+
+        <div className="border border-gray-200 rounded-[18px] sm:rounded-[24px] p-2.5 sm:p-5 bg-white min-w-0 flex flex-col justify-between">
+          <p className="text-[9px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5 sm:mb-1 truncate">
             Pending Tasks
           </p>
-          <h3 className="text-2xl font-bold text-gray-900">
+          <h3 className="text-lg sm:text-2xl font-bold text-gray-900">
             {tasks.filter((t) => !t.completed).length}
           </h3>
-          <p className="text-[12px] text-gray-400 mt-1">Across all team members</p>
+          <p className="text-[10px] sm:text-[12px] text-gray-400 mt-0.5 sm:mt-1 truncate hidden sm:block">
+            Across team members
+          </p>
         </div>
       </div>
 
@@ -169,8 +175,8 @@ export const TeamView: React.FC<TeamViewProps> = ({
         </div>
       </div>
 
-      {/* Team Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* Team Cards Grid (2 in a row on mobile view) */}
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
         {filteredMembers.map((member) => {
           // Tasks assigned to this member
           const memberTasks = tasks.filter(
@@ -182,46 +188,46 @@ export const TeamView: React.FC<TeamViewProps> = ({
           return (
             <div
               key={member.id}
-              className="border border-gray-200 rounded-[24px] p-6 bg-white flex flex-col justify-between space-y-5 hover:border-gray-300 shadow-sm transition-all group"
+              className="border border-gray-200 rounded-[20px] sm:rounded-[24px] p-3.5 sm:p-6 bg-white flex flex-col justify-between space-y-3 sm:space-y-5 hover:border-gray-300 shadow-sm transition-all group"
             >
-              <div className="space-y-4">
+              <div className="space-y-2.5 sm:space-y-4">
                 {/* Avatar */}
                 <div className="relative inline-block">
-                  <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-gray-100 shrink-0">
+                  <div className="relative w-11 h-11 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-gray-100 shrink-0">
                     <Image
                       src={member.avatarUrl}
                       alt={member.name}
                       fill
                       className="object-cover"
-                      sizes="56px"
+                      sizes="(max-width: 640px) 44px, 56px"
                     />
                   </div>
                   {/* Active dot */}
-                  <span className="w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white absolute bottom-0 right-0" />
+                  <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 bg-emerald-500 rounded-full border-2 border-white absolute bottom-0 right-0" />
                 </div>
 
                 {/* Name & Role */}
-                <div>
-                  <h3 className="text-[15px] font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
+                <div className="min-w-0">
+                  <h3 className="text-[13px] sm:text-[15px] font-semibold text-gray-900 group-hover:text-gray-700 transition-colors truncate">
                     {member.name}
                   </h3>
-                  <p className="text-[12px] font-medium text-gray-500 mt-0.5">
+                  <p className="text-[11px] sm:text-[12px] font-medium text-gray-500 mt-0.5 truncate">
                     {member.role || 'Team Contributor'}
                   </p>
-                  <p className="text-[11px] text-gray-400 mt-1 truncate">
+                  <p className="text-[10px] sm:text-[11px] text-gray-400 mt-0.5 sm:mt-1 truncate">
                     {member.email || `${member.name.toLowerCase().replace(/\s+/g, '.')}@taskflow.app`}
                   </p>
                 </div>
 
                 {/* Tasks Overview Stats */}
-                <div className="p-3.5 bg-gray-50/80 border border-gray-200/80 rounded-[20px] space-y-2">
-                  <div className="flex items-center justify-between text-[12px]">
+                <div className="p-2.5 sm:p-3.5 bg-gray-50/80 border border-gray-200/80 rounded-[14px] sm:rounded-[20px] space-y-1.5 sm:space-y-2">
+                  <div className="flex items-center justify-between text-[11px] sm:text-[12px]">
                     <span className="text-gray-500">Active tasks</span>
                     <span className="font-semibold text-gray-900">{activeCount}</span>
                   </div>
                   {overdueCount > 0 && (
-                    <div className="flex items-center justify-between text-[11px] text-red-600 font-medium">
-                      <span>Overdue items</span>
+                    <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-red-600 font-medium">
+                      <span>Overdue</span>
                       <span className="px-1.5 py-0.2 rounded-full bg-red-100 text-red-700 font-bold">{overdueCount}</span>
                     </div>
                   )}
@@ -229,13 +235,13 @@ export const TeamView: React.FC<TeamViewProps> = ({
               </div>
 
               {/* Action Button */}
-              <div className="pt-3 border-t border-gray-100">
+              <div className="pt-2.5 sm:pt-3 border-t border-gray-100">
                 <Button
                   variant="primary"
                   size="sm"
                   icon={<ArrowRightIcon className="w-3 h-3 text-white" />}
                   iconPosition="right"
-                  className="w-full justify-center"
+                  className="w-full justify-center text-[11px] sm:text-[12px]"
                   onClick={() => onSelectMemberFilter(member.id)}
                 >
                   View Tasks
@@ -249,11 +255,11 @@ export const TeamView: React.FC<TeamViewProps> = ({
       {/* Invite Member Modal */}
       {isInviteModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 transition-opacity"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/20 transition-opacity overflow-y-auto"
           onClick={() => setIsInviteModalOpen(false)}
         >
           <div
-            className="bg-white rounded-[24px] max-w-md w-full p-6 border border-gray-200 shadow-xl space-y-4 animate-fade-in"
+            className="bg-white rounded-[24px] max-w-md w-full p-4 sm:p-6 border border-gray-200 shadow-xl space-y-4 animate-fade-in max-h-[90vh] overflow-y-auto my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}

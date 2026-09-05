@@ -132,7 +132,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
             {/* Filter Bar */}
             <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center border border-gray-200 rounded-[24px] p-3.5 bg-white">
                 {/* Search */}
-                <div className="relative flex-1 min-w-[180px]">
+                <div className="relative flex-1 w-full min-w-0 sm:min-w-[180px]">
                     <SearchIcon className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
                     <input
                         type="text"
@@ -143,49 +143,47 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
                     />
                 </div>
 
+                {/* Dropdowns Row (Side-by-side on Mobile) */}
+                <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                    {/* Project Filter */}
+                    <div className="flex-1 sm:flex-none sm:w-[150px] min-w-0">
+                        <CustomSelect
+                            options={[
+                                { value: 'all', label: 'All Projects' },
+                                ...projects.map((p) => ({ value: p.title, label: p.title })),
+                            ]}
+                            value={projectFilter}
+                            onChange={handleProjectChange}
+                            size="sm"
+                        />
+                    </div>
 
-                {/* Project Filter */}
-                <div className="w-[150px]">
-                    <CustomSelect
-                        options={[
-                            { value: 'all', label: 'All Projects' },
-                            ...projects.map((p) => ({ value: p.title, label: p.title })),
-                        ]}
-                        value={projectFilter}
-                        onChange={handleProjectChange}
-                        size="sm"
+                    {/* Assignee Filter */}
+                    <div className="flex-1 sm:flex-none sm:w-[150px] min-w-0">
+                        <CustomSelect
+                            options={[
+                                { value: 'all', label: 'All Assignees' },
+                                ...teamAvatars.map((u) => ({ value: u.id, label: u.name, avatarUrl: u.avatarUrl })),
+                            ]}
+                            value={assigneeFilter}
+                            onChange={setAssigneeFilter}
+                            size="sm"
+                        />
+                    </div>
 
-                    />
+                    {/* Clear */}
+                    {isFiltered && (
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={handleClearFilters}
+                            className="text-gray-400 hover:text-gray-600 shrink-0"
+                        >
+                            Clear
+                        </Button>
+                    )}
                 </div>
-
-                {/* Assignee Filter */}
-                <div className="w-[150px]">
-                    <CustomSelect
-                        options={[
-                            { value: 'all', label: 'All Assignees' },
-                            ...teamAvatars.map((u) => ({ value: u.id, label: u.name, avatarUrl: u.avatarUrl })),
-                        ]}
-                        value={assigneeFilter}
-                        onChange={setAssigneeFilter}
-                        size="sm"
-                    />
-                </div>
-
-
-                {/* Clear */}
-                {isFiltered && (
-                    <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleClearFilters}
-                        className="text-gray-400 hover:text-gray-600"
-                    >
-                        Clear
-                    </Button>
-                )}
-
-                
             </div>
 
 
@@ -201,7 +199,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
                             onDragOver={(e) => handleDragOver(e, column.status)}
                             onDragLeave={(e) => handleDragLeave(e, column.status)}
                             onDrop={(e) => handleDrop(e, column.status)}
-                            className={`min-h-[500px] rounded-[24px] border p-3.5 transition-all duration-200 ${isDragTarget
+                            className={`min-h-0 md:min-h-[500px] rounded-[24px] border p-3.5 transition-all duration-200 ${isDragTarget
                                     ? 'border-gray-400 bg-gray-50'
                                     : 'border-gray-200 bg-gray-50/50'
                                 }`}
@@ -223,11 +221,11 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
                                 </button>
                             </div>
 
-                            {/* Cards */}
-                            <div className="space-y-2.5">
+                            {/* Cards (2 in a row on mobile view) */}
+                            <div className="grid grid-cols-2 md:grid-cols-1 gap-2.5">
                                 {columnTasks.length === 0 ? (
                                     <div
-                                        className={`rounded-[16px] border border-dashed p-6 text-center text-[12px] text-gray-400 ${isDragTarget ? 'border-gray-400 bg-white' : 'border-gray-200'
+                                        className={`col-span-2 md:col-span-1 rounded-[16px] border border-dashed p-6 text-center text-[12px] text-gray-400 ${isDragTarget ? 'border-gray-400 bg-white' : 'border-gray-200'
                                             }`}
                                     >
                                         {isDragTarget ? 'Drop here' : 'No tasks'}
@@ -242,7 +240,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
                                                 draggable
                                                 onDragStart={(e) => handleDragStart(e, task.id)}
                                                 onDragEnd={handleDragEnd}
-                                                className={`group rounded-[24px] border border-gray-200 bg-white p-3.5 transition-all select-none cursor-grab active:cursor-grabbing hover:border-gray-300 hover:shadow-sm ${
+                                                className={`group rounded-[20px] sm:rounded-[24px] border border-gray-200 bg-white p-2.5 sm:p-3.5 transition-all select-none cursor-grab active:cursor-grabbing hover:border-gray-300 hover:shadow-sm ${
                                                     isBeingDragged ? 'opacity-40 border-dashed border-gray-400 bg-gray-50' : 'opacity-100'
                                                 }`}
                                             >
@@ -316,14 +314,14 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
                                                 </div>
 
                                                 {/* Project name */}
-                                                <p className="ml-5 mt-1 text-[11px] text-gray-400">
+                                                <p className="ml-4 sm:ml-5 mt-0.5 text-[10px] sm:text-[11px] text-gray-400 truncate">
                                                     {task.projectName}
                                                 </p>
 
                                                 {/* Card footer */}
-                                                <div className="ml-5 mt-2.5 flex items-center justify-between pt-2 border-t border-gray-100">
-                                                    <div className="flex items-center gap-1.5">
-                                                        <div className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full border border-gray-200">
+                                                <div className="ml-0 sm:ml-5 mt-2 sm:mt-2.5 flex items-center justify-between gap-1 pt-2 border-t border-gray-100">
+                                                    <div className="flex items-center gap-1 sm:gap-1.5 min-w-0 flex-1">
+                                                        <div className="relative h-4.5 w-4.5 sm:h-5 sm:w-5 shrink-0 overflow-hidden rounded-full border border-gray-200">
                                                             <Image
                                                                 src={task.assignee.avatarUrl}
                                                                 alt={task.assignee.name}
@@ -332,18 +330,18 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
                                                                 sizes="20px"
                                                             />
                                                         </div>
-                                                        <span className="text-[11px] font-medium text-gray-700">
+                                                        <span className="text-[10px] sm:text-[11px] font-medium text-gray-700 truncate max-w-[60px] sm:max-w-none">
                                                             {task.assignee.name}
                                                         </span>
                                                     </div>
 
-                                                    <div className="flex items-center gap-1.5">
+                                                    <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                                                         {task.isUrgent && !task.completed && (
-                                                            <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-red-50 text-red-600 border border-red-200 shrink-0">
+                                                            <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full bg-red-50 text-red-600 border border-red-200 shrink-0 whitespace-nowrap">
                                                                 Overdue
                                                             </span>
                                                         )}
-                                                        <span className={`text-[11px] ${task.isUrgent && !task.completed ? 'font-medium text-red-600' : 'text-gray-400'}`}>
+                                                        <span className={`text-[10px] sm:text-[11px] whitespace-nowrap shrink-0 ${task.isUrgent && !task.completed ? 'font-medium text-red-600' : 'text-gray-400'}`}>
                                                             {task.dueDate}
                                                         </span>
                                                     </div>

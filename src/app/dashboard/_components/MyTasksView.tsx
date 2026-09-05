@@ -54,7 +54,7 @@ export const MyTasksView: React.FC<MyTasksViewProps> = ({
   return (
     <div className="w-full space-y-5">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-[20px] font-semibold text-gray-900">My Tasks</h1>
           <p className="text-[13px] text-gray-400 mt-0.5">
@@ -62,9 +62,9 @@ export const MyTasksView: React.FC<MyTasksViewProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 w-full sm:w-auto">
           {/* User selector */}
-          <div className="w-48">
+          <div className="w-36 sm:w-48">
             <CustomSelect
               options={teamAvatars.map((u) => ({ value: u.id, label: u.name, avatarUrl: u.avatarUrl }))}
               value={selectedAssigneeId}
@@ -79,6 +79,7 @@ export const MyTasksView: React.FC<MyTasksViewProps> = ({
             size="md"
             icon={<PlusIcon className="w-3.5 h-3.5" />}
             onClick={onCreateTask}
+            className="shrink-0"
           >
             New task
           </Button>
@@ -96,16 +97,14 @@ export const MyTasksView: React.FC<MyTasksViewProps> = ({
         ].map((tab) => {
           const isActive = filterTab === tab.id;
           return (
-            <button
+            <Button
               key={tab.id}
               type="button"
+              variant={isActive ? 'primary' : tab.isAlert ? 'danger' : 'ghost'}
+              size="sm"
               onClick={() => setFilterTab(tab.id as typeof filterTab)}
-              className={`px-3 py-1.5 rounded-full text-[13px] font-medium transition-colors flex items-center gap-1.5 shrink-0 ${
-                isActive
-                  ? 'bg-gray-900 text-white'
-                  : tab.isAlert
-                  ? 'text-red-600 hover:bg-red-50'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+              className={`shrink-0 flex items-center gap-1.5 ${
+                !isActive && !tab.isAlert ? 'text-gray-500 hover:text-gray-900' : ''
               }`}
             >
               <span>{tab.label}</span>
@@ -120,13 +119,13 @@ export const MyTasksView: React.FC<MyTasksViewProps> = ({
               >
                 {tab.count}
               </span>
-            </button>
+            </Button>
           );
         })}
       </div>
 
       {/* Tasks List */}
-      <div className="border border-gray-200 rounded-[24px] bg-white overflow-hidden divide-y divide-gray-100">
+      <div className="border border-gray-200 rounded-[24px] bg-white divide-y divide-gray-100">
         {filteredTasks.length === 0 ? (
           <div className="p-8 text-center text-gray-400 text-[13px]">
             No tasks found in this view.
@@ -135,14 +134,14 @@ export const MyTasksView: React.FC<MyTasksViewProps> = ({
           filteredTasks.map((task) => (
             <div
               key={task.id}
-              className="p-3.5 flex items-center justify-between gap-4 hover:bg-gray-50/60 transition-colors"
+              className="p-3 sm:p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 hover:bg-gray-50/60 transition-colors"
             >
               {/* Left: Checkbox & Info */}
-              <div className="flex items-center gap-3 min-w-0 flex-1">
+              <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
                 <button
                   type="button"
                   onClick={() => onToggleTaskCompletion(task.id)}
-                  className={`w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center transition-colors shrink-0 ${
+                  className={`w-4 h-4 mt-0.5 sm:mt-0 rounded-full border-[1.5px] flex items-center justify-center transition-colors shrink-0 ${
                     task.completed
                       ? 'bg-gray-900 border-gray-900 text-white'
                       : 'border-gray-300 hover:border-gray-400'
@@ -156,7 +155,7 @@ export const MyTasksView: React.FC<MyTasksViewProps> = ({
                 </button>
 
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
                     <p
                       onClick={() => onToggleTaskCompletion(task.id)}
                       className={`text-[13px] font-medium cursor-pointer truncate ${
@@ -166,22 +165,22 @@ export const MyTasksView: React.FC<MyTasksViewProps> = ({
                       {task.title}
                     </p>
                     {task.isUrgent && !task.completed && (
-                      <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-red-50 text-red-600 border border-red-200 shrink-0">
+                      <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-red-50 text-red-600 border border-red-200 shrink-0 whitespace-nowrap">
                         Overdue
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-2 mt-0.5 text-[11px] text-gray-400">
-                    <span>{task.projectName}</span>
+                  <div className="flex items-center gap-2 mt-0.5 text-[11px] text-gray-400 flex-wrap sm:flex-nowrap">
+                    <span className="truncate max-w-[150px] sm:max-w-none">{task.projectName}</span>
                     <span>•</span>
-                    <span>Due {task.dueDate}</span>
+                    <span className="whitespace-nowrap">Due {task.dueDate}</span>
                   </div>
                 </div>
               </div>
 
               {/* Right: Status selector & Edit */}
-              <div className="flex items-center gap-3 shrink-0">
-                <div className="w-28">
+              <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100/80 w-full sm:w-auto">
+                <div className="w-28 sm:w-28">
                   <CustomSelect
                     options={[
                       { value: 'To Do', label: 'To Do' },

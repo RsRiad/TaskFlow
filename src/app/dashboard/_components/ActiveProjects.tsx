@@ -36,9 +36,9 @@ export const ActiveProjects: React.FC<ActiveProjectsProps> = ({
   };
 
   return (
-    <div className="border border-gray-200 rounded-[24px] p-5 bg-white h-full flex flex-col">
+    <div className="border border-gray-200 rounded-[24px] p-4 sm:p-5 bg-white h-full flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
         <h2 className="text-[15px] font-semibold text-gray-900">Active projects</h2>
         <Button
           variant="ghost"
@@ -60,21 +60,21 @@ export const ActiveProjects: React.FC<ActiveProjectsProps> = ({
             <div
               key={project.id}
               onClick={() => onSelectProject && onSelectProject(project.title)}
-              className="flex items-center justify-between py-2.5 px-3 rounded-[16px] hover:bg-gray-50 border border-transparent hover:border-gray-200 cursor-pointer transition-all group"
+              className="flex items-center justify-between gap-2.5 sm:gap-4 p-2.5 sm:p-3 rounded-[16px] hover:bg-gray-50/80 border border-transparent hover:border-gray-200/80 cursor-pointer transition-all group"
             >
               {/* Left: Icon & Info */}
-              <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
                 <div className="w-8 h-8 rounded-[12px] bg-gray-100 flex items-center justify-center text-gray-500 shrink-0 group-hover:bg-gray-200 transition-colors">
                   {getProjectIcon(project.iconType)}
                 </div>
 
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-[13px] font-semibold text-gray-900 truncate group-hover:text-gray-700">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <h3 className="text-[12px] sm:text-[13px] font-semibold text-gray-900 truncate group-hover:text-gray-700">
                       {project.title}
                     </h3>
                     <span
-                      className={`px-2 py-0.5 text-[10px] font-semibold rounded-full border ${
+                      className={`px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold rounded-full border whitespace-nowrap shrink-0 ${
                         isAtRisk
                           ? 'bg-amber-50 text-amber-700 border-amber-200'
                           : 'bg-emerald-50 text-emerald-700 border-emerald-200'
@@ -83,20 +83,20 @@ export const ActiveProjects: React.FC<ActiveProjectsProps> = ({
                       {isAtRisk ? 'At Risk' : 'On Track'}
                     </span>
                   </div>
-                  <p className="text-[11px] text-gray-400 truncate mt-0.5">
+                  <p className="text-[10px] sm:text-[11px] text-gray-400 truncate mt-0.5">
                     Due {project.dueDate}
                   </p>
                 </div>
               </div>
 
               {/* Right: Owners & Progress */}
-              <div className="flex items-center gap-4 shrink-0">
+              <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
                 {/* Owners */}
-                <div className="flex items-center -space-x-1.5">
+                <div className="hidden sm:flex items-center -space-x-1.5 shrink-0">
                   {project.owners.map((owner) => (
                     <div
                       key={owner.id}
-                      className="relative w-6 h-6 rounded-full border-2 border-white overflow-hidden"
+                      className="relative w-6 h-6 rounded-full border-2 border-white overflow-hidden shrink-0"
                       title={owner.name}
                     >
                       <Image
@@ -111,14 +111,14 @@ export const ActiveProjects: React.FC<ActiveProjectsProps> = ({
                 </div>
 
                 {/* Progress */}
-                <div className="flex items-center gap-2 min-w-[80px]">
-                  <div className="flex-1 bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                <div className="flex items-center gap-1.5 sm:gap-2.5 w-16 sm:w-28 shrink-0">
+                  <div className="flex-1 bg-gray-100 h-1 sm:h-1.5 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full bg-gray-900 transition-all duration-500"
                       style={{ width: `${project.progress}%` }}
                     />
                   </div>
-                  <span className="text-[11px] font-semibold text-gray-500 w-7 text-right">
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-gray-500 w-6 sm:w-7 text-right shrink-0">
                     {project.progress}%
                   </span>
                 </div>
