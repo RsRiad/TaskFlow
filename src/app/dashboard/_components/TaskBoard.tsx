@@ -128,7 +128,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
     };
 
     return (
-        <section className="w-full space-y-4 animate-fade-in">
+        <section className="w-full space-y-4">
             {/* Filter Bar */}
             <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center border border-gray-200 rounded-[24px] p-3.5 bg-white">
                 {/* Search */}

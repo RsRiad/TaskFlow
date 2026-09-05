@@ -105,7 +105,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
   };
 
   return (
-    <div className="w-full space-y-6 animate-fade-in">
+    <div className="w-full space-y-6">
       {/* Header Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -275,9 +275,9 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
 
                 {/* View Task Board Button */}
                 <Button
-                  variant="secondary"
+                  variant="primary"
                   size="sm"
-                  icon={<ArrowRightIcon className="w-3 h-3" />}
+                  icon={<ArrowRightIcon className="w-3 h-3 text-white" />}
                   iconPosition="right"
                   onClick={() => onSelectProjectFilter(project.title)}
                 >

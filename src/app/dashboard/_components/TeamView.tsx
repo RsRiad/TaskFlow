@@ -79,7 +79,7 @@ export const TeamView: React.FC<TeamViewProps> = ({
   };
 
   return (
-    <div className="w-full space-y-6 animate-fade-in">
+    <div className="w-full space-y-6">
       {/* Header Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -231,9 +231,9 @@ export const TeamView: React.FC<TeamViewProps> = ({
               {/* Action Button */}
               <div className="pt-3 border-t border-gray-100">
                 <Button
-                  variant="secondary"
+                  variant="primary"
                   size="sm"
-                  icon={<ArrowRightIcon className="w-3 h-3" />}
+                  icon={<ArrowRightIcon className="w-3 h-3 text-white" />}
                   iconPosition="right"
                   className="w-full justify-center"
                   onClick={() => onSelectMemberFilter(member.id)}

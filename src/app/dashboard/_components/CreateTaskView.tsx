@@ -148,7 +148,7 @@ export const CreateTaskView: React.FC<CreateTaskViewProps> = ({
     };
 
     return (
-        <div className="w-full space-y-4 animate-fade-in">
+        <div className="w-full space-y-4">
             {/* Page Title & Back Action */}
             <div className="flex items-center justify-between">
                 <div>

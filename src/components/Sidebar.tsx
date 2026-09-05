@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import {
   OverviewIcon,
   MyTasksIcon,
@@ -33,6 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isCollapsed = false,
   onToggleCollapse,
 }) => {
+  const router = useRouter();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -142,7 +144,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Bottom: User Profile with Popover */}
-        <div ref={profileRef} className="relative pt-4 border-t border-gray-100 px-1 overflow-hidden">
+        <div ref={profileRef} className="relative pt-4 border-t border-gray-100 px-1">
           {/* Profile Button */}
           <button
             type="button"
@@ -161,7 +163,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 />
               </div>
               <div
-                className={`min-w-0 transition-all duration-300 ease-in-out whitespace-nowrap ${
+                className={`min-w-0 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden ${
                   isCollapsed ? 'max-w-0 opacity-0 -translate-x-3 pointer-events-none' : 'max-w-[120px] opacity-100 translate-x-0'
                 }`}
               >
@@ -179,8 +181,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Profile Menu Popover */}
           {isProfileMenuOpen && (
             <div
-              className={`absolute bottom-16 z-50 bg-white border border-gray-200 rounded-[20px] shadow-xl p-1.5 animate-fade-in text-[13px] ${
-                isCollapsed ? 'left-12 w-44' : 'left-0 right-0'
+              className={`absolute z-[100] bg-white border border-gray-200 rounded-[20px] shadow-2xl p-1.5 animate-fade-in text-[13px] ${
+                isCollapsed ? 'left-14 bottom-2 w-44' : 'left-0 right-0 bottom-16'
               }`}
             >
               <button
@@ -199,7 +201,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 type="button"
                 onClick={() => {
                   setIsProfileMenuOpen(false);
-                  alert('Logged out successfully');
+                  router.push('/login');
                 }}
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-red-600 hover:bg-red-50 rounded-[12px] transition-colors font-medium"
               >

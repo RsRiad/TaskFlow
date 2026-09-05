@@ -59,6 +59,23 @@ body {
   animation: fadeIn 0.25s ease-out forwards;
 }
 
+/* Fast & Crisp Page Transition (Linear / Vercel Style) */
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 0.0s ease-out forwards;
+  will-change: transform, opacity;
+}
+
 /* Consistent select/dropdown styling */
 select {
   background-image: none;

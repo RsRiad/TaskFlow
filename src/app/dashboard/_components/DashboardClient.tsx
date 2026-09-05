@@ -217,143 +217,141 @@ export function DashboardClient() {
         </div>
 
         <div className="w-full px-5 py-5 lg:px-8 lg:py-6 space-y-5">
-          {/* Header Title for Overview */}
-          {activeView === 'overview' && (
-            <div className="flex items-center justify-between mb-1">
-              <div>
-                <h1 className="text-[20px] font-semibold text-gray-900">Dashboard</h1>
-                <p className="text-[13px] text-gray-400 mt-0.5">Overview of activity</p>
-              </div>
-              <Button
-                variant="primary"
-                size="md"
-                icon={<PlusIcon className="w-3.5 h-3.5" />}
-                onClick={() => openTaskForm()}
-              >
-                New task
-              </Button>
-            </div>
-          )}
-
-          {/* Header Title for Task Board */}
-          {activeView === 'task-board' && (
-            <div className="flex items-center justify-between mb-1">
-              <div>
-                <h1 className="text-[20px] font-semibold text-gray-900">Task Board</h1>
-                <p className="text-[13px] text-gray-400 mt-0.5">Manage and organize your tasks</p>
-              </div>
-              <Button
-                variant="primary"
-                size="md"
-                icon={<PlusIcon className="w-3.5 h-3.5" />}
-                onClick={() => openTaskForm()}
-              >
-                New task
-              </Button>
-            </div>
-          )}
-
-          {/* View Routing */}
-          {activeView === 'task-form' ? (
-            <CreateTaskView
-              projects={projects}
-              teamAvatars={teamList}
-              onBack={closeTaskForm}
-              onAddTask={handleAddTask}
-              onUpdateTask={handleUpdateTask}
-              initialTask={editingTask}
-            />
-          ) : activeView === 'task-board' ? (
-            <TaskBoard
-              tasks={tasks}
-              projects={projects}
-              teamAvatars={teamList}
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              onStatusChange={handleStatusChange}
-              onCreateTask={(status) => openTaskForm(undefined, status)}
-              onEditTask={openTaskForm}
-              selectedProjectFilter={selectedProjectFilter}
-              onProjectFilterChange={setSelectedProjectFilter}
-            />
-          ) : activeView === 'my-tasks' ? (
-            <MyTasksView
-              tasks={tasks}
-              teamAvatars={teamList}
-              projects={projects}
-              onToggleTaskCompletion={handleToggleTaskCompletion}
-              onStatusChange={handleStatusChange}
-              onCreateTask={() => openTaskForm()}
-              onEditTask={openTaskForm}
-            />
-          ) : activeView === 'projects' ? (
-            <ProjectsView
-              projects={projects}
-              tasks={tasks}
-              teamAvatars={teamList}
-              onSelectProjectFilter={(projectTitle) => {
-                setSelectedProjectFilter(projectTitle);
-                setActiveView('task-board');
-                setActiveTab('task-board');
-              }}
-              onAddNewProject={handleAddNewProject}
-            />
-          ) : activeView === 'team' ? (
-            <TeamView
-              teamAvatars={teamList}
-              tasks={tasks}
-              onSelectMemberFilter={() => {
-                setActiveView('my-tasks');
-                setActiveTab('my-tasks');
-              }}
-              onAddTeamMember={handleAddTeamMember}
-            />
-          ) : (
-            <>
-              {/* Key Metrics / Stat Cards */}
-              <StatCards
-                activeProjectsCount={projects.length}
-                totalTasksCount={tasks.length}
-                overdueTasksCount={overdueTasksCount}
-                completedTasksCount={completedTasksCount}
+          {/* View Routing with Smooth Page Transition */}
+          <div key={activeView} className="animate-page-enter space-y-5">
+            {activeView === 'task-form' ? (
+              <CreateTaskView
+                projects={projects}
+                teamAvatars={teamList}
+                onBack={closeTaskForm}
+                onAddTask={handleAddTask}
+                onUpdateTask={handleUpdateTask}
+                initialTask={editingTask}
               />
-
-              {/* Middle Layout Grid: Active Projects & Tasks Due Soon */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
-                <div className="lg:col-span-7">
-                  <ActiveProjects
-                    projects={filteredProjects}
-                    onViewTaskBoard={() => {
-                      setSelectedProjectFilter('all');
-                      setSearchQuery('');
-                      setActiveView('task-board');
-                      setActiveTab('task-board');
-                    }}
-                    onSelectProject={(projectTitle) => {
-                      setSelectedProjectFilter(projectTitle);
-                      setSearchQuery('');
-                      setActiveView('task-board');
-                      setActiveTab('task-board');
-                    }}
-                  />
+            ) : activeView === 'task-board' ? (
+              <div className="space-y-5">
+                <div className="flex items-center justify-between mb-1">
+                  <div>
+                    <h1 className="text-[20px] font-semibold text-gray-900">Task Board</h1>
+                    <p className="text-[13px] text-gray-400 mt-0.5">Manage and organize your tasks</p>
+                  </div>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    icon={<PlusIcon className="w-3.5 h-3.5" />}
+                    onClick={() => openTaskForm()}
+                  >
+                    New task
+                  </Button>
                 </div>
-
-                <div className="lg:col-span-5">
-                  <TasksDueSoon
-                    tasks={filteredTasks}
-                    onToggleTaskCompletion={handleToggleTaskCompletion}
-                    onViewTaskBoard={() => {
-                      setActiveView('task-board');
-                      setActiveTab('task-board');
-                    }}
-                  />
-                </div>
+                <TaskBoard
+                  tasks={tasks}
+                  projects={projects}
+                  teamAvatars={teamList}
+                  searchQuery={searchQuery}
+                  onSearchChange={setSearchQuery}
+                  onStatusChange={handleStatusChange}
+                  onCreateTask={(status) => openTaskForm(undefined, status)}
+                  onEditTask={openTaskForm}
+                  selectedProjectFilter={selectedProjectFilter}
+                  onProjectFilterChange={setSelectedProjectFilter}
+                />
               </div>
+            ) : activeView === 'my-tasks' ? (
+              <MyTasksView
+                tasks={tasks}
+                teamAvatars={teamList}
+                projects={projects}
+                onToggleTaskCompletion={handleToggleTaskCompletion}
+                onStatusChange={handleStatusChange}
+                onCreateTask={() => openTaskForm()}
+                onEditTask={openTaskForm}
+              />
+            ) : activeView === 'projects' ? (
+              <ProjectsView
+                projects={projects}
+                tasks={tasks}
+                teamAvatars={teamList}
+                onSelectProjectFilter={(projectTitle) => {
+                  setSelectedProjectFilter(projectTitle);
+                  setActiveView('task-board');
+                  setActiveTab('task-board');
+                }}
+                onAddNewProject={handleAddNewProject}
+              />
+            ) : activeView === 'team' ? (
+              <TeamView
+                teamAvatars={teamList}
+                tasks={tasks}
+                onSelectMemberFilter={() => {
+                  setActiveView('my-tasks');
+                  setActiveTab('my-tasks');
+                }}
+                onAddTeamMember={handleAddTeamMember}
+              />
+            ) : (
+              <div className="space-y-5">
+                {/* Header Title for Overview */}
+                <div className="flex items-center justify-between mb-1">
+                  <div>
+                    <h1 className="text-[20px] font-semibold text-gray-900">Dashboard</h1>
+                    <p className="text-[13px] text-gray-400 mt-0.5">Overview of activity</p>
+                  </div>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    icon={<PlusIcon className="w-3.5 h-3.5" />}
+                    onClick={() => openTaskForm()}
+                  >
+                    New task
+                  </Button>
+                </div>
 
-              {/* Bottom Stream: Recent Activity */}
-              <RecentActivity activities={activities} />
-            </>
-          )}
+                {/* Key Metrics / Stat Cards */}
+                <StatCards
+                  activeProjectsCount={projects.length}
+                  totalTasksCount={tasks.length}
+                  overdueTasksCount={overdueTasksCount}
+                  completedTasksCount={completedTasksCount}
+                />
+
+                {/* Middle Layout Grid: Active Projects & Tasks Due Soon */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+                  <div className="lg:col-span-7">
+                    <ActiveProjects
+                      projects={filteredProjects}
+                      onViewTaskBoard={() => {
+                        setSelectedProjectFilter('all');
+                        setSearchQuery('');
+                        setActiveView('task-board');
+                        setActiveTab('task-board');
+                      }}
+                      onSelectProject={(projectTitle) => {
+                        setSelectedProjectFilter(projectTitle);
+                        setSearchQuery('');
+                        setActiveView('task-board');
+                        setActiveTab('task-board');
+                      }}
+                    />
+                  </div>
+
+                  <div className="lg:col-span-5">
+                    <TasksDueSoon
+                      tasks={filteredTasks}
+                      onToggleTaskCompletion={handleToggleTaskCompletion}
+                      onViewTaskBoard={() => {
+                        setActiveView('task-board');
+                        setActiveTab('task-board');
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Bottom Stream: Recent Activity */}
+                <RecentActivity activities={activities} />
+              </div>
+            )}
+          </div>
         </div>
       </main>
 

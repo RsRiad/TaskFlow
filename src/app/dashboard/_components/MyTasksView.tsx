@@ -52,7 +52,7 @@ export const MyTasksView: React.FC<MyTasksViewProps> = ({
   };
 
   return (
-    <div className="w-full space-y-5 animate-fade-in">
+    <div className="w-full space-y-5">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
